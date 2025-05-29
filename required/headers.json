@@ -1,0 +1,118 @@
+{
+  "pre_process": {
+    "vacation_header": [
+      "id",
+      "emp_voter_num",
+      "emp_name",
+      "unit",
+      "gov_center_name",
+      "subunit",
+      "center_name",
+      "position",
+      "type",
+      "num_days",
+      "vacation_from",
+      "vacation_to",
+      "num_hours",
+      "hours_start_timestamp",
+      "hours_end_timestamp",
+      "hours_day_name",
+      "date",
+      "status"
+    ],
+    "duty_header": [
+      "id",
+      "emp_voter_num",
+      "emp_name",
+      "unit",
+      "gov_center_name",
+      "subunit",
+      "center_name",
+      "position",
+      "type",
+      "num_hours",
+      "hours_start_timestamp",
+      "hours_end_timestamp",
+      "day",
+      "date",
+      "status"
+    ]
+  },
+  "processing": {
+    "attendant_header": [
+      "emp_voter_num",
+      "emp_name",
+      "center_name",
+      "center_num",
+      "entry_timestamp",
+      "leave_timestamp",
+      "date"
+    ],
+    "earlylate_absent_header": [
+      "emp_voter_num",
+      "emp_name",
+      "date",
+      "entry_timestamp",
+      "leave_timestamp",
+      "is_late",
+      "is_early",
+      "is_absent"
+    ],
+    "has_excuse_header": [
+      "emp_voter_num",
+      "emp_name",
+      "date",
+      "entry_timestamp",
+      "leave_timestamp",
+      "is_late",
+      "is_early",
+      "is_absent",
+      "id",
+      "type",
+      "num_days",
+      "num_hours",
+      "hours_start_timestamp",
+      "hours_end_timestamp",
+      "status"
+    ]
+  },
+  "post_processing": {
+    "attendant": [
+      "رقم الناخب",
+      "اسم الموظف",
+      "التاريخ",
+      "وقت الدخول",
+      "وقت الخروج",
+      "مبكر",
+      "متأخر",
+      "غائب"
+    ],
+    "excuse": [
+      "رقم الناخب",
+      "اسم الموظف",
+      "التاريخ",
+      "وقت الدخول",
+      "وقت الخروج",
+      "متأخر",
+      "مبكر",
+      "غائب",
+      "رقم العذر",
+      "نوع العذر",
+      "عدد ايام الاجازة",
+      "عدد ساعات الزمنية",
+      "وقت بداية الزمنية",
+      "وفت انتهاء الزمنية",
+      "حالة العذر"
+    ],
+    "no_excuse": [
+      "رقم الناخب",
+      "اسم الموظف",
+      "التاريخ",
+      "وقت الدخول",
+      "وقت الخروج",
+      "متأخر",
+      "مبكر",
+      "غائب"
+    ]
+  }
+}
