@@ -1,5 +1,10 @@
 import pandas as pd
 
+
+def get_date(con):
+    return str(con.sql("SELECT date FROM faceprint").fetchone()[0])
+
+
 def normalize_time(con, table_name, column_name):
     # converts written time into real time
     # 10AM  -> 10:00
@@ -12,6 +17,7 @@ def normalize_time(con, table_name, column_name):
             ELSE SPLIT_PART({column_name}, ' ', 1) || ':00'
         END;
     """)
+
 
 def military_time(con, table_name, column_name):
     # converts time into military time

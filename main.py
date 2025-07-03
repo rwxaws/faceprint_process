@@ -6,7 +6,8 @@ from functions.utils import rtl_text
 from functions.cleanup import (
     clean_duty,
     clean_rest,
-    clean_faceprint
+    clean_faceprint,
+    get_date
 )
 
 from functions.filter import (
@@ -18,13 +19,14 @@ from functions.extract_excuses import extract_excuses
 from functions.tables import get_excuses, get_no_excuses
 
 
-def process_files(faceprint_file, rest_files, duty_file, date):
+def process_files(faceprint_file, rest_files, duty_file):
     con = dd.connect(":memory:")
-    target_date = str(date)
 
     clean_duty(con, duty_file)
     clean_rest(con, rest_files)
     clean_faceprint(con, faceprint_file)
+
+    target_date = get_date(con)
 
     filter_duty(con, target_date)
     filter_resttime(con, target_date)
@@ -41,9 +43,6 @@ def process_files(faceprint_file, rest_files, duty_file, date):
 
 
 rtl_text("معالجة بصمات الوجه", component="h1")
-
-rtl_text("اختر التاريخ", component="markdown")
-date = st.date_input('choose date', label_visibility="collapsed")
 
 rtl_text("ملف بصمة الوجه", component="markdown")
 faceprint_file = st.file_uploader('faceprint', type="csv",
@@ -65,4 +64,4 @@ if not all([
     st.button("بدء المعالجة", disabled=True)
 else:
     if st.button("بدء المعالجة"):
-        process_files(faceprint_file, rest_files, duty_file, date)
+        process_files(faceprint_file, rest_files, duty_file)
