@@ -1,16 +1,18 @@
-import pandas as pd
 import datetime as dt
+
+import pandas as pd
 
 from functions.pre_process.duty.military_time import standardize_time
 
 
-def hours_timestamp_fixer(df):
+def hours_timestamp_fixer(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Fix timestamp format in the hours_start_timestamp and hours_end_timestamp columns.
-    
+    Fix timestamp format in the hours_start_timestamp
+    and hours_end_timestamp columns.
+
     Args:
         df (pd.DataFrame): DataFrame containing timestamp columns to fix
-        
+
     Returns:
         pd.DataFrame: DataFrame with standardized timestamps
     """
@@ -19,14 +21,14 @@ def hours_timestamp_fixer(df):
     missing_cols = [col for col in required_cols if col not in df.columns]
     if missing_cols:
         raise ValueError(f"Missing required columns: {', '.join(missing_cols)}")
-    
+
     cleaned_rows = []
 
     for _, row in df.iterrows():
         try:
             start = row['hours_start_timestamp']
-            end   = row['hours_end_timestamp']
-            date  = row['date']
+            end = row['hours_end_timestamp']
+            date = row['date']
 
             if pd.notna(date):
                 date = dt.datetime.strptime(date, '%Y-%m-%d %H:%M:%S').date()
@@ -53,7 +55,7 @@ def hours_timestamp_fixer(df):
             # Log the error and either skip the row or use a default value
             print(f"Error processing row: {row}, Error: {e}")
             # Add error handling strategy here
-        
+
         cleaned_rows.append(row)
 
     df = pd.DataFrame(cleaned_rows, dtype='string')

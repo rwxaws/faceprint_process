@@ -98,6 +98,21 @@ wheels = [
 ]
 
 [[package]]
+name = "duckdb"
+version = "1.3.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/35/ab/d89a4dd14311d5a0081711bc66db3fad73f7645fa7eb3844c423d2fa0a17/duckdb-1.3.1.tar.gz", hash = "sha256:8e101990a879533b1d33f003df2eb2a3c4bc7bdf976bd7ef7c32342047935327", size = 11628075, upload-time = "2025-06-16T13:57:04.119Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d0/2e/5e1bf9f0b43bcb37dbe729d3a2c55da8b232137c15b0b63d2d51f96793b6/duckdb-1.3.1-cp313-cp313-macosx_12_0_arm64.whl", hash = "sha256:72bbc8479c5d88e839a92c458c94c622f917ff0122853323728d6e25b0c3d4e1", size = 15529541, upload-time = "2025-06-16T13:56:34.011Z" },
+    { url = "https://files.pythonhosted.org/packages/bc/ab/6b2e1efb133b2f4990710bd9a54e734a12a147eaead1102e36dd8d126494/duckdb-1.3.1-cp313-cp313-macosx_12_0_universal2.whl", hash = "sha256:937de83df6bbe4bee5830ce80f568d4c0ebf3ef5eb809db3343d2161e4f6e42b", size = 32525596, upload-time = "2025-06-16T13:56:36.048Z" },
+    { url = "https://files.pythonhosted.org/packages/68/9f/879f6f33a1d5b4afee9dd4082e97d9b43c21cf734c90164d10fd7303edb5/duckdb-1.3.1-cp313-cp313-macosx_12_0_x86_64.whl", hash = "sha256:21440dd37f073944badd495c299c6d085cd133633450467ec420c71897ac1d5b", size = 17106339, upload-time = "2025-06-16T13:56:38.358Z" },
+    { url = "https://files.pythonhosted.org/packages/9a/06/5755f93be743ec27986f275847a85d44bb1bd6d8631492d337729fbe9145/duckdb-1.3.1-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:663610b591ea6964f140441c81b718e745704cf098c540e905b200b9079e2a5c", size = 19173540, upload-time = "2025-06-16T13:56:40.304Z" },
+    { url = "https://files.pythonhosted.org/packages/90/a6/c8577b741974f106e24f8eb3efedc399be1a23cbbdcf49dd4bea5bb8aa4e/duckdb-1.3.1-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:8793b5abb365bbbf64ba3065f3a37951fe04f2d4506b0e24f3f8ecd08b3af4ba", size = 21122193, upload-time = "2025-06-16T13:56:42.321Z" },
+    { url = "https://files.pythonhosted.org/packages/43/10/b4576bbfa895a0ab125697fd58c0fbe54338672a9df25e7311bdf21f9e04/duckdb-1.3.1-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:27d775a5af405d1c228561830c8ccbe4e2832dafb4012f16c05fde1cde206dee", size = 22773434, upload-time = "2025-06-16T13:56:46.414Z" },
+    { url = "https://files.pythonhosted.org/packages/94/b9/f5ae51f7331f79c184fd96456c0896de875149fdeb092084fd20433ec97c/duckdb-1.3.1-cp313-cp313-win_amd64.whl", hash = "sha256:3eb045a9bf92da890d890cde2f676b3bda61b9de3b7dc46cbaaf75875b41e4b0", size = 11302770, upload-time = "2025-06-16T13:56:48.325Z" },
+]
+
+[[package]]
 name = "et-xmlfile"
 version = "2.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -144,15 +159,19 @@ name = "ihec-faceprint-web"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "duckdb" },
     { name = "openpyxl" },
     { name = "pandas" },
+    { name = "pandas-stubs" },
     { name = "streamlit" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "duckdb", specifier = ">=1.3.1" },
     { name = "openpyxl", specifier = ">=3.1.5" },
     { name = "pandas", specifier = ">=2.2.3" },
+    { name = "pandas-stubs", specifier = ">=2.2.3.250527" },
     { name = "streamlit", specifier = ">=1.45.1" },
 ]
 
@@ -306,6 +325,19 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/25/b0/98d6ae2e1abac4f35230aa756005e8654649d305df9a28b16b9ae4353bff/pandas-2.2.3-cp313-cp313t-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1db71525a1538b30142094edb9adc10be3f3e176748cd7acc2240c2f2e5aa3a4", size = 11871013, upload-time = "2024-09-20T13:09:44.39Z" },
     { url = "https://files.pythonhosted.org/packages/cc/57/0f72a10f9db6a4628744c8e8f0df4e6e21de01212c7c981d31e50ffc8328/pandas-2.2.3-cp313-cp313t-musllinux_1_2_aarch64.whl", hash = "sha256:15c0e1e02e93116177d29ff83e8b1619c93ddc9c49083f237d4312337a61165d", size = 15711620, upload-time = "2024-09-20T19:02:20.639Z" },
     { url = "https://files.pythonhosted.org/packages/ab/5f/b38085618b950b79d2d9164a711c52b10aefc0ae6833b96f626b7021b2ed/pandas-2.2.3-cp313-cp313t-musllinux_1_2_x86_64.whl", hash = "sha256:ad5b65698ab28ed8d7f18790a0dc58005c7629f227be9ecc1072aa74c0c1d43a", size = 13098436, upload-time = "2024-09-20T13:09:48.112Z" },
+]
+
+[[package]]
+name = "pandas-stubs"
+version = "2.2.3.250527"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "types-pytz" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/5f/0d/5fe7f7f3596eb1c2526fea151e9470f86b379183d8b9debe44b2098651ca/pandas_stubs-2.2.3.250527.tar.gz", hash = "sha256:e2d694c4e72106055295ad143664e5c99e5815b07190d1ff85b73b13ff019e63", size = 106312, upload-time = "2025-05-27T15:24:29.716Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ec/f8/46141ba8c9d7064dc5008bfb4a6ae5bd3c30e4c61c28b5c5ed485bf358ba/pandas_stubs-2.2.3.250527-py3-none-any.whl", hash = "sha256:cd0a49a95b8c5f944e605be711042a4dd8550e2c559b43d70ba2c4b524b66163", size = 159683, upload-time = "2025-05-27T15:24:28.4Z" },
 ]
 
 [[package]]
@@ -557,6 +589,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/49/18/e3f902a1d21f14035b5bc6246a8c0f51e0eef562ace3a2cea403c1fb7021/tornado-6.5.1-cp39-abi3-win32.whl", hash = "sha256:e0a36e1bc684dca10b1aa75a31df8bdfed656831489bc1e6a6ebed05dc1ec365", size = 444396, upload-time = "2025-05-22T18:15:34.205Z" },
     { url = "https://files.pythonhosted.org/packages/7b/09/6526e32bf1049ee7de3bebba81572673b19a2a8541f795d887e92af1a8bc/tornado-6.5.1-cp39-abi3-win_amd64.whl", hash = "sha256:908e7d64567cecd4c2b458075589a775063453aeb1d2a1853eedb806922f568b", size = 444840, upload-time = "2025-05-22T18:15:36.1Z" },
     { url = "https://files.pythonhosted.org/packages/55/a7/535c44c7bea4578e48281d83c615219f3ab19e6abc67625ef637c73987be/tornado-6.5.1-cp39-abi3-win_arm64.whl", hash = "sha256:02420a0eb7bf617257b9935e2b754d1b63897525d8a289c9d65690d580b4dcf7", size = 443596, upload-time = "2025-05-22T18:15:37.433Z" },
+]
+
+[[package]]
+name = "types-pytz"
+version = "2025.2.0.20250516"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/bd/72/b0e711fd90409f5a76c75349055d3eb19992c110f0d2d6aabbd6cfbc14bf/types_pytz-2025.2.0.20250516.tar.gz", hash = "sha256:e1216306f8c0d5da6dafd6492e72eb080c9a166171fa80dd7a1990fd8be7a7b3", size = 10940, upload-time = "2025-05-16T03:07:01.91Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c1/ba/e205cd11c1c7183b23c97e4bcd1de7bc0633e2e867601c32ecfc6ad42675/types_pytz-2025.2.0.20250516-py3-none-any.whl", hash = "sha256:e0e0c8a57e2791c19f718ed99ab2ba623856b11620cb6b637e5f62ce285a7451", size = 10136, upload-time = "2025-05-16T03:07:01.075Z" },
 ]
 
 [[package]]
