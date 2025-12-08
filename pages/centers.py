@@ -2,13 +2,13 @@ import duckdb as dd
 import streamlit as st
 
 from functions.cleanup import clean_duty, clean_faceprint, clean_rest, get_date
-from functions.extract_excuses import extract_excuses
+from functions.process_faceprint.extract_excuses import extract_excuses
 from functions.filter import (
     filter_duty,
     filter_restday,
     filter_resttime,
 )
-from functions.tables import get_excuses, get_no_excuses
+from functions.process_faceprint.tables import get_excuses, get_no_excuses
 from functions.utils import rtl_text
 
 
@@ -19,7 +19,7 @@ def process_files(faceprint_file, rest_files, duty_file):
     clean_rest(con, rest_files)
     clean_faceprint(con, faceprint_file)
 
-    target_date = get_date(con)
+    target_date = get_date(con, "faceprint")
 
     filter_duty(con, target_date)
     filter_resttime(con, target_date)
