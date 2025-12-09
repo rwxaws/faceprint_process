@@ -304,7 +304,7 @@ def clean_report(con, report_file, emp_file):
         SELECT
             emp_voter_num,
             emp_name,
-            strptime(date, '%Y-%d-%m %H:%M:%S')::DATE as date,
+            strptime(date, '%d/%m/%Y')::DATE as date,
             unit,
             entry_time,
             leave_time,
