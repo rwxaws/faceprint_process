@@ -18,7 +18,7 @@ def process_files(report_file, emp_file, rest_files, duty_file):
     clean_duty(con, duty_file)
     clean_rest(con, rest_files)
 
-    if not clean_report(con, report_file, emp_file):
+    if clean_report(con, report_file, emp_file) is False:
         rtl_text("عدد الموظفين غير متطابق", component="h2")
         return
 
