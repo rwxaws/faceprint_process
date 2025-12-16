@@ -17,7 +17,10 @@ def process_files(report_file, emp_file, rest_files, duty_file):
 
     clean_duty(con, duty_file)
     clean_rest(con, rest_files)
-    clean_report(con, report_file, emp_file)
+
+    if not clean_report(con, report_file, emp_file):
+        rtl_text("عدد الموظفين غير متطابق", component="h2")
+        return
 
     target_date = get_date(con, "report")
 
@@ -28,8 +31,14 @@ def process_files(report_file, emp_file, rest_files, duty_file):
     extract_excuses(con)
     has_excuses = get_excuses(con)
     no_excuse = get_no_excuses(con)
+    attendant = con.sql("SELECT * FROM report_present").df()
+
+    rtl_text("حضور", component="h2")
+    st.dataframe(attendant, hide_index=True)
+
     rtl_text("لديه عذر", component="h2")
     st.dataframe(has_excuses, hide_index=True)
+
     rtl_text("بدون عذر", component="h2")
     st.dataframe(no_excuse, hide_index=True)
 

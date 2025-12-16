@@ -283,8 +283,27 @@ def clean_report(con, report_file, emp_file):
 
     report_df.columns = report_columns
 
+    if len(report_df) != len(emp_df):
+        return False
+
     con.sql("""
         CREATE OR REPLACE TABLE report(
+            emp_voter_num VARCHAR,
+            emp_name      VARCHAR,
+            date          DATE,
+            unit          VARCHAR,
+            entry_time    TIME,
+            leave_time    TIME,
+            target_entry  TIME,
+            is_late       VARCHAR,
+            is_early      VARCHAR,
+            is_absent     VARCHAR,
+            excuse        VARCHAR
+        );
+    """)
+
+    con.sql("""
+        CREATE OR REPLACE TABLE report_present(
             emp_voter_num VARCHAR,
             emp_name      VARCHAR,
             date          DATE,
@@ -304,7 +323,7 @@ def clean_report(con, report_file, emp_file):
         SELECT
             emp_voter_num,
             emp_name,
-            strptime(date, '%d/%m/%Y')::DATE as date,
+            strptime(date, '%Y-%d-%m %H:%M:%S')::DATE as date,
             unit,
             entry_time,
             leave_time,
@@ -355,6 +374,17 @@ def clean_report(con, report_file, emp_file):
             leave_time IS NOT NULL AND
             target_entry = '08:00' AND
             leave_time < '15:00:00';
+    """)
+
+    # attendant employees
+    con.sql("""
+        INSERT INTO report_present
+        SELECT *
+        FROM report
+        WHERE
+            is_early  IS NULL AND
+            is_late   IS NULL AND
+            is_absent IS NULL
     """)
 
     # drop employees that have entry & leave
