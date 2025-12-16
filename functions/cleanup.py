@@ -252,23 +252,17 @@ def clean_report(con, report_file, emp_file):
         dtype=str
     )
 
-    target_entry = pd.read_excel(
-        report_file,
-        header=None,
-        usecols="M",
-        dtype=str
-    )[12][0]
-
     emp_df = pd.read_excel(
         emp_file,
         header=None,
         skiprows=1,
-        usecols="A",
+        usecols="A,C",
         dtype=str
     )
 
-    report_df["target_entry"] = target_entry
+
     report_df["emp_voter_num"] = emp_df[0]
+    report_df["target_entry"]  = emp_df[2]
 
     report_columns = [
         "emp_name",
@@ -277,8 +271,8 @@ def clean_report(con, report_file, emp_file):
         "leave_time",
         "excuse",
         "unit",
-        "target_entry",
-        "emp_voter_num"
+        "emp_voter_num",
+        "target_entry"
     ]
 
     report_df.columns = report_columns
@@ -339,21 +333,27 @@ def clean_report(con, report_file, emp_file):
     con.sql("""
         UPDATE report
         SET is_absent = 'غائب'
-        WHERE entry_time IS NULL AND leave_time IS NULL;
+        WHERE
+            entry_time IS NULL AND
+            leave_time IS NULL;
     """)
 
     # set without entry
     con.sql("""
         UPDATE report
         SET is_late = 'بدون بصمة دخول'
-        WHERE entry_time IS NULL AND is_absent IS NULL;
+        WHERE
+            entry_time IS NULL AND
+            is_absent IS NULL;
     """)
 
     # set without leave
     con.sql("""
         UPDATE report
         SET is_early = 'بدون بصمة خروج'
-        WHERE leave_time IS NULL AND is_absent IS NULL;
+        WHERE
+            leave_time IS NULL AND
+            is_absent IS NULL;
     """)
 
     # set late entry
@@ -361,9 +361,9 @@ def clean_report(con, report_file, emp_file):
         UPDATE report
         SET is_late = 'متأخر'
         WHERE
-            entry_time IS NOT NULL AND
-            target_entry = '08:00' AND
-            entry_time >= '08:31:00';
+            entry_time IS NOT NULL         AND
+            target_entry = TIME '08:00:00' AND
+            entry_time  >= TIME '08:31:00';
     """)
 
     # set early leave
@@ -371,9 +371,9 @@ def clean_report(con, report_file, emp_file):
         UPDATE report
         SET is_early = 'مبكر'
         WHERE
-            leave_time IS NOT NULL AND
-            target_entry = '08:00' AND
-            leave_time < '15:00:00';
+            leave_time IS NOT NULL         AND
+            target_entry = TIME '08:00:00' AND
+            leave_time < TIME '15:00:00';
     """)
 
     # attendant employees
