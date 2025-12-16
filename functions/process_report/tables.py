@@ -95,3 +95,21 @@ def get_no_excuses(con):
             excuse AS 'عذر الجهاز',
         FROM report
     """).df().astype(str).replace(['NaT', '<NA>', 'None'], '')
+
+
+def get_attendant(con):
+    return con.sql("""
+        SELECT
+            emp_voter_num AS 'رقم الناخب',
+            emp_name AS 'اسم الموظف',
+            date AS 'تاريخ البصمة',
+            unit AS 'الشعبة',
+            entry_time AS 'وقت الدخول',
+            leave_time AS 'وقت الخروج',
+            target_entry AS 'وقت البصمة',
+            is_late AS 'متأخر',
+            is_early AS 'مبكر',
+            is_absent AS 'غائب',
+            excuse AS 'عذر الجهاز'
+        FROM report_present
+    """).df().astype(str).replace(['NaT', '<NA>', 'None'], '')

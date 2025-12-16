@@ -9,7 +9,7 @@ from functions.filter import (
 )
 from functions.utils import rtl_text
 from functions.process_report.extract_excuses import extract_excuses
-from functions.process_report.tables import get_excuses, get_no_excuses
+from functions.process_report.tables import get_excuses, get_no_excuses, get_attendant
 
 
 def process_files(report_file, emp_file, rest_files, duty_file):
@@ -31,7 +31,7 @@ def process_files(report_file, emp_file, rest_files, duty_file):
     extract_excuses(con)
     has_excuses = get_excuses(con)
     no_excuse = get_no_excuses(con)
-    attendant = con.sql("SELECT * FROM report_present").df().astype(str)
+    attendant = get_attendant(con)
 
     rtl_text("حضور", component="h2")
     st.dataframe(attendant, hide_index=True)

@@ -380,17 +380,17 @@ def clean_report(con, report_file, emp_file):
     con.sql("""
         INSERT INTO report_present
         SELECT
-            emp_voter_num AS 'رقم الناخب',
-            emp_name AS 'اسم الموظف',
-            date::DATE AS 'تاريخ البصمة',
-            unit AS 'الشعبة',
-            entry_time AS 'وقت الدخول',
-            leave_time AS 'وقت الخروج',
-            target_entry AS 'وقت البصمة',
-            is_late AS 'متأخر',
-            is_early AS 'مبكر',
-            is_absent AS 'غائب',
-            excuse AS 'عذر الجهاز'
+            emp_voter_num,
+            emp_name,
+            date,
+            unit,
+            entry_time,
+            leave_time,
+            target_entry,
+            is_late,
+            is_early,
+            is_absent,
+            excuse
         FROM report
         WHERE
             is_early  IS NULL AND
