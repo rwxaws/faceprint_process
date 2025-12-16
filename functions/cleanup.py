@@ -297,7 +297,7 @@ def clean_report(con, report_file, emp_file):
     """)
 
     con.sql("""
-        CREATE OR REPLACE TABLE report_present(
+        CREATE OR REPLACE TABLE report_present (
             emp_voter_num VARCHAR,
             emp_name      VARCHAR,
             date          DATE,
@@ -379,7 +379,18 @@ def clean_report(con, report_file, emp_file):
     # attendant employees
     con.sql("""
         INSERT INTO report_present
-        SELECT *
+        SELECT
+            emp_voter_num AS 'رقم الناخب',
+            emp_name AS 'اسم الموظف',
+            date::DATE AS 'تاريخ البصمة',
+            unit AS 'الشعبة',
+            entry_time AS 'وقت الدخول',
+            leave_time AS 'وقت الخروج',
+            target_entry AS 'وقت البصمة',
+            is_late AS 'متأخر',
+            is_early AS 'مبكر',
+            is_absent AS 'غائب',
+            excuse AS 'عذر الجهاز'
         FROM report
         WHERE
             is_early  IS NULL AND
