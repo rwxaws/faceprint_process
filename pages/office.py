@@ -1,46 +1,35 @@
 import duckdb as dd
 import streamlit as st
 
-from functions.cleanup import clean_duty, clean_report, clean_rest, get_date
-from functions.filter import (
-    filter_duty,
-    filter_restday,
-    filter_resttime,
-)
+from functions.process_report import process_report
 from functions.utils import rtl_text
-from functions.process_report.extract_excuses import extract_excuses
-from functions.process_report.tables import get_excuses, get_no_excuses, get_attendant
-
 
 def process_files(report_file, emp_file, rest_files, duty_file):
     con = dd.connect(":memory:")
 
-    clean_duty(con, duty_file)
-    clean_rest(con, rest_files)
-
-    if clean_report(con, report_file, emp_file) is False:
-        rtl_text("عدد الموظفين غير متطابق", component="h2")
+    try:
+        process_report(con, report_file, emp_file, duty_file, rest_files)
+    except ValueError as e:
+        rtl_text(str(e), component="h2")
         return
 
-    target_date = get_date(con, "report")
+    attendant_df = con.sql("SELECT * FROM arabic_report_attendant").df().astype(str).replace(['NaT', '<NA>', 'None'], '')
+    full_df      = con.sql("SELECT * FROM arabic_report_fullday").df().astype(str).replace(['NaT', '<NA>', 'None'], '')
+    half_df      = con.sql("SELECT * FROM arabic_report_halfday").df().astype(str).replace(['NaT', '<NA>', 'None'], '')
+    no_excuse_df = con.sql("SELECT * FROM arabic_no_excuse").df().astype(str).replace(['NaT', '<NA>', 'None'], '')
 
-    filter_duty(con, target_date)
-    filter_resttime(con, target_date)
-    filter_restday(con, target_date)
-
-    extract_excuses(con)
-    has_excuses = get_excuses(con)
-    no_excuse = get_no_excuses(con)
-    attendant = get_attendant(con)
 
     rtl_text("حضور", component="h2")
-    st.dataframe(attendant, hide_index=True)
+    st.dataframe(attendant_df, hide_index=True)
 
-    rtl_text("لديه عذر", component="h2")
-    st.dataframe(has_excuses, hide_index=True)
+    rtl_text("عذر (يوم كامل)", component="h2")
+    st.dataframe(full_df, hide_index=True)
+
+    rtl_text("عذر (زمنية/واجب)", component="h2")
+    st.dataframe(half_df, hide_index=True)
 
     rtl_text("بدون عذر", component="h2")
-    st.dataframe(no_excuse, hide_index=True)
+    st.dataframe(no_excuse_df, hide_index=True)
 
 
 rtl_text("معالجة بصمات الوجه (ذي قار)", component="h1")

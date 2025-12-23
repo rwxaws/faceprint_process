@@ -18,3 +18,10 @@ venv = ".venv"
 
 [tool.ruff]
 lint.extend-select = ["I"]
+
+[dependency-groups]
+dev = [
+    "bpython>=0.26",
+    "pudb>=2025.1.5",
+]
+
