@@ -1,10 +1,9 @@
 -- report
-INSERT INTO
-    report
+INSERT INTO report
 SELECT
     emp_voter_num,
     emp_name,
-    strptime(date, '%Y-%d-%m %H:%M:%S')::DATE as date,
+    strptime(date, '%Y-%d-%m %H:%M:%S')::DATE AS date,
     unit,
     entry_time,
     leave_time,
@@ -13,5 +12,4 @@ SELECT
     NULL,
     NULL,
     excuse
-FROM
-    report_df;
+FROM report_df;

@@ -6,13 +6,11 @@ def rtl_text(text, component="markdown"):
     rtl_style_center = 'style="direction:rtl; text-align: center"'
 
     if component == "markdown":
-        st.markdown(f'<div {rtl_style}>{text}</div>', unsafe_allow_html=True)
+        st.markdown(f"<div {rtl_style}>{text}</div>", unsafe_allow_html=True)
     elif component == "h1":
-        st.markdown(f'<h1 {rtl_style_center}>{text}</h1>',
-                    unsafe_allow_html=True)
+        st.markdown(f"<h1 {rtl_style_center}>{text}</h1>", unsafe_allow_html=True)
     elif component == "h2":
-        st.markdown(f'<h2 {rtl_style_center}>{text}</h2>',
-                    unsafe_allow_html=True)
+        st.markdown(f"<h2 {rtl_style_center}>{text}</h2>", unsafe_allow_html=True)
 
 
 def load_sql(filename):
@@ -22,6 +20,18 @@ def load_sql(filename):
 
 def get_date(con, table_name):
     return str(con.sql(f"SELECT date FROM {table_name}").fetchone()[0])
+
+
+def cleanup_tables(con):
+    tables = con.sql("""
+        SELECT table_name
+        FROM information_schema.tables
+        WHERE table_name LIKE 'tmp_%'
+           OR table_name LIKE 'raw_%'
+    """).fetchall()
+
+    for (table,) in tables:
+        con.sql(f"DROP TABLE IF EXISTS {table}")
 
 
 def normalize_time(con, table_name, column_name):
@@ -50,7 +60,7 @@ def military_time(con, table_name, column_name):
             column_name = '{column_name}'
     """).fetchone()[0]
 
-    if (col_type == "VARCHAR"):
+    if col_type == "VARCHAR":
         con.sql(f"""
             UPDATE {table_name}
             SET {column_name} =
@@ -61,7 +71,7 @@ def military_time(con, table_name, column_name):
             END
         """)
 
-    if (col_type == "TIME"):
+    if col_type == "TIME":
         con.sql(f"""
             UPDATE {table_name}
             SET {column_name} =
@@ -71,4 +81,3 @@ def military_time(con, table_name, column_name):
                 ELSE {column_name}
             END
         """)
-

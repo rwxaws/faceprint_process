@@ -1,8 +1,12 @@
 import streamlit as st
 
-pages = st.navigation([
-              st.Page("pages/office.py", title="مكتب ذي قار"),
-              # st.Page("pages/centers.py", title="المكاتب الفرعية")
-              ])
+from arabic_names import page_names
+
+pages = st.navigation(
+    [
+        st.Page("pages/office.py", title=page_names["office"]),
+        st.Page("pages/centers.py", title=page_names["centers"]),
+    ]
+)
 
 pages.run()
