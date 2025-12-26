@@ -43,22 +43,27 @@ def process_files(faceprint_file, rest_files, duty_file):
     excused_half_df.columns = faceprint_columns["excused_half_df"]
     unexcused_df.columns = faceprint_columns["unexcused_df"]
 
-    rtl_text(labels["attendant"], component="h2")
-    st.dataframe(attendant_df, hide_index=True)
+    attendant, excused_full, excused_half, unexcused = st.tabs(
+        [labels["attendant"], labels["fullday"], labels["halfday"], labels["unexcused"]]
+    )
 
-    rtl_text(labels["fullday"], component="h2")
-    st.dataframe(excused_full_df, hide_index=True)
+    with attendant:
+        st.dataframe(attendant_df, hide_index=True)
 
-    rtl_text(labels["halfday"], component="h2")
-    st.dataframe(excused_half_df, hide_index=True)
+    with excused_full:
+        st.dataframe(excused_full_df, hide_index=True)
 
-    rtl_text(labels["unexcused"], component="h2")
-    st.dataframe(unexcused_df, hide_index=True)
+    with excused_half:
+        st.dataframe(excused_half_df, hide_index=True)
+
+    with unexcused:
+        st.dataframe(unexcused_df, hide_index=True)
 
     cleanup_tables(con)
 
 
-rtl_text(labels["centers"], component="h1")
+rtl_text(labels["title"], component="h1")
+rtl_text(labels["centers"], component="h2")
 
 rtl_text(labels["report_faceprint"], component="markdown")
 faceprint_file = st.file_uploader("faceprint", type="csv", label_visibility="collapsed")
