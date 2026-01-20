@@ -3,7 +3,7 @@ INSERT INTO report
 SELECT
     emp_voter_num,
     emp_name,
-    strptime(date, '%Y-%d-%m %H:%M:%S')::DATE AS date,
+    date::DATE AS date,
     unit,
     entry_time,
     leave_time,

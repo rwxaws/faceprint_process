@@ -30,6 +30,10 @@ def process_report(con, report_file, emp_file, duty_file, rest_files):
     if len(report_df) != len(emp_df):
         raise ValueError("عدد الموظفين غير متطابق")
 
+    # normalize date column to ISO format (YYYY-MM-DD)
+    # assumes that the day (not month) comes first or last, instead of the american way
+    report_df["date"] = pd.to_datetime(report_df["date"], dayfirst=True).dt.strftime('%Y-%m-%d')
+
     # create report tables
     con.sql(load_sql("sql/schema/report_tables.sql"))
 

@@ -52,7 +52,7 @@ SELECT
     leave_status
 FROM report_excused_half;
 
--- no excuse
+-- no excuse or mismatched excuse
 CREATE OR REPLACE TABLE export_report_unexcused AS
 SELECT
     emp_voter_num,
@@ -65,5 +65,31 @@ SELECT
     is_late,
     is_early,
     is_absent,
-    excuse
-FROM report;
+    excuse,
+    NULL AS mismatched_excuse_id,
+    NULL AS mismatched_excuse_type,
+    NULL AS mismatched_num_hours,
+    NULL AS mismatched_start_hour,
+    NULL AS mismatched_end_hour,
+    NULL AS mismatched_status
+FROM report
+UNION ALL
+SELECT
+    emp_voter_num,
+    emp_name,
+    date,
+    unit,
+    entry_time,
+    leave_time,
+    target_entry,
+    is_late,
+    is_early,
+    is_absent,
+    excuse,
+    mismatched_excuse_id,
+    mismatched_excuse_type,
+    mismatched_num_hours,
+    mismatched_start_hour,
+    mismatched_end_hour,
+    mismatched_status
+FROM report_excused_half_mismatched;

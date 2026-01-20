@@ -35,8 +35,7 @@ INNER JOIN tmp_excuses AS e
     ON
         r.emp_voter_num = e.emp_voter_num
         AND r.entry_time BETWEEN e.start_hour AND e.end_hour
-        AND e.start_hour BETWEEN r.target_entry AND r.target_entry
-        + 30 * INTERVAL 1 MINUTE
+        AND e.start_hour = r.target_entry
 WHERE r.is_late IS NOT NULL;
 
 -- leave excuse for early employees
@@ -83,6 +82,26 @@ WHERE
     AND
     (r.is_early IS NULL OR lm.leave_excuse_id IS NOT NULL);
 
+-- Mismatched: employees with violations who have excuses but those excuses don't cover their violations
+CREATE OR REPLACE TABLE report_excused_half_mismatched AS
+SELECT
+    r.*,
+    e.id AS mismatched_excuse_id,
+    e.excuse_type AS mismatched_excuse_type,
+    e.num_hours AS mismatched_num_hours,
+    e.start_hour AS mismatched_start_hour,
+    e.end_hour AS mismatched_end_hour,
+    e.status AS mismatched_status
+FROM report AS r
+INNER JOIN tmp_excuses AS e ON r.emp_voter_num = e.emp_voter_num
+WHERE
+    r.is_absent IS NULL
+    AND r.emp_voter_num NOT IN (SELECT emp_voter_num FROM report_excused_half);
+
 -- Remove excused employees from report
 DELETE FROM report
 WHERE emp_voter_num IN (SELECT emp_voter_num FROM report_excused_half);
+
+-- Remove mismatched employees from report (they'll be in their own export table)
+DELETE FROM report
+WHERE emp_voter_num IN (SELECT emp_voter_num FROM report_excused_half_mismatched);

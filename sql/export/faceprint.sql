@@ -76,5 +76,32 @@ SELECT
     target_mid AS "وقت البصمة الوسطية",
     is_late AS "متأخر",
     is_early AS "مبكر",
-    is_absent AS "غائب"
-FROM faceprint;
+    is_absent AS "غائب",
+    NULL AS "رقم العذر",
+    NULL AS "نوع العذر",
+    NULL AS "عدد ساعات العذر",
+    NULL AS "ساعة بدء العذر",
+    NULL AS "ساعة نهاية العذر",
+    NULL AS "حالة العذر"
+FROM faceprint
+UNION ALL
+SELECT
+    emp_voter_num AS "رقم الناخب",
+    emp_name AS "اسم الموظف",
+    date AS "تاريخ البصمة",
+    emp_center_num AS "رقم المركز",
+    entry_time AS "وقت الدخول",
+    mid_time AS "بصمة وسطية",
+    leave_time AS "وقت الخروج",
+    target_entry AS "وقت البصمة",
+    target_mid AS "وقت البصمة الوسطية",
+    is_late AS "متأخر",
+    is_early AS "مبكر",
+    is_absent AS "غائب",
+    mismatched_excuse_id AS "رقم العذر",
+    mismatched_excuse_type AS "نوع العذر",
+    mismatched_num_hours AS "عدد ساعات العذر",
+    mismatched_start_hour AS "ساعة بدء العذر",
+    mismatched_end_hour AS "ساعة نهاية العذر",
+    mismatched_status AS "حالة العذر"
+FROM faceprint_excused_half_mismatched;

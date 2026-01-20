@@ -34,10 +34,8 @@ FROM faceprint AS fp
 INNER JOIN tmp_excuses AS e
     ON
         fp.emp_voter_num = e.emp_voter_num
-        AND fp.entry_time
-        BETWEEN e.start_hour AND e.end_hour
-        AND fp.entry_time
-        BETWEEN fp.target_entry AND fp.target_entry + 30 * INTERVAL 1 MINUTE
+        AND fp.entry_time BETWEEN e.start_hour AND e.end_hour
+        AND e.start_hour = fp.target_entry
 WHERE fp.is_late IS NOT NULL;
 
 -- mid excuse
@@ -54,7 +52,11 @@ FROM faceprint AS fp
 INNER JOIN tmp_excuses AS e
     ON
         fp.emp_voter_num = e.emp_voter_num
-        AND fp.mid_time BETWEEN e.start_hour AND e.end_hour
+        AND (
+            (fp.mid_time IS NULL AND fp.target_mid BETWEEN e.start_hour AND e.end_hour)
+            OR
+            (fp.mid_time IS NOT NULL AND fp.mid_time BETWEEN e.start_hour AND e.end_hour)
+        )
 WHERE fp.is_mid IS NOT NULL;
 
 -- leave excuse for early employees
@@ -110,6 +112,26 @@ WHERE
     AND
     (fp.is_early IS NULL OR lm.leave_excuse_id IS NOT NULL);
 
+-- Mismatched: employees with violations who have excuses but those excuses don't cover their violations
+CREATE OR REPLACE TABLE faceprint_excused_half_mismatched AS
+SELECT
+    fp.*,
+    e.id AS mismatched_excuse_id,
+    e.excuse_type AS mismatched_excuse_type,
+    e.num_hours AS mismatched_num_hours,
+    e.start_hour AS mismatched_start_hour,
+    e.end_hour AS mismatched_end_hour,
+    e.status AS mismatched_status
+FROM faceprint AS fp
+INNER JOIN tmp_excuses AS e ON fp.emp_voter_num = e.emp_voter_num
+WHERE
+    fp.is_absent IS NULL
+    AND fp.emp_voter_num NOT IN (SELECT emp_voter_num FROM faceprint_excused_half);
+
 -- remove excused employees from faceprint
 DELETE FROM faceprint
 WHERE emp_voter_num IN (SELECT emp_voter_num FROM faceprint_excused_half);
+
+-- remove mismatched employees from faceprint (they'll be in their own export table)
+DELETE FROM faceprint
+WHERE emp_voter_num IN (SELECT emp_voter_num FROM faceprint_excused_half_mismatched);
