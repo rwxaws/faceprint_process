@@ -33,4 +33,4 @@ SET is_early = 'مبكر'
 WHERE
     leave_time IS NOT NULL
     AND target_entry = TIME '08:00:00'
-    AND leave_time < TIME '15:00:00';
+    AND leave_time < leave_hour();

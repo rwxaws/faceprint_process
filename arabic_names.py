@@ -1,4 +1,5 @@
 page_names = {"office": "مكتب ذي قار", "centers": "المكاتب الفرعية"}
+leave_hour = "14:00:00"
 
 labels = {
     "title": "معالجة بصمات الوجه",
