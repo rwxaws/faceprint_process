@@ -93,3 +93,46 @@ SELECT
     mismatched_end_hour,
     mismatched_status
 FROM report_excused_half_mismatched;
+
+-- Summary Table
+CREATE OR REPLACE TABLE export_summary AS
+SELECT
+    emp_voter_num,
+    emp_name,
+    date,
+    unit,
+    entry_time,
+    leave_time,
+    'حاضر' AS state
+FROM export_report_attendant
+UNION ALL
+SELECT
+    emp_voter_num,
+    emp_name,
+    date,
+    unit,
+    '' AS entry_time,
+    '' AS leave_time,
+    'عذر (يوم كامل)' AS state
+FROM export_report_excused_full
+UNION ALL
+SELECT
+    emp_voter_num,
+    emp_name,
+    date,
+    unit,
+    entry_time,
+    leave_time,
+    'عذر (زمنية/واجب)' AS state
+FROM export_report_excused_half
+UNION ALL
+SELECT
+    emp_voter_num,
+    emp_name,
+    date,
+    unit,
+    entry_time,
+    leave_time,
+    'بدون عذر' AS state
+FROM export_report_unexcused
+ORDER BY emp_name;

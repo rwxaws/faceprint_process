@@ -3,7 +3,6 @@ import pandas as pd
 from functions.process_excuses import process_excuses
 from functions.utils import cleanup_tables, get_date, load_sql
 import os
-import arabic_names
 
 
 def process_report(con, report_file, emp_file, duty_file, rest_files):

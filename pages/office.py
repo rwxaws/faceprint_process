@@ -42,15 +42,32 @@ def process_files(report_file, emp_file, rest_files, duty_file):
         .replace(["NaT", "<NA>", "None"], "")
     )
 
+    summary_df = (
+        con.sql("SELECT * FROM export_summary")
+        .df()
+        .astype(str)
+        .replace(["NaT", "<NA>", "None"], "")
+    )
+
     # set arabic column names
     attendant_df.columns = report_columns["attendant_df"]
     excused_full_df.columns = report_columns["excused_full_df"]
     excused_half_df.columns = report_columns["excused_half_df"]
     unexcused_df.columns = report_columns["unexcused_df"]
+    summary_df.columns = report_columns["summary_df"]
 
-    attendant, excused_full, excused_half, unexcused = st.tabs(
-        [labels["attendant"], labels["fullday"], labels["halfday"], labels["unexcused"]]
+    summary, attendant, excused_full, excused_half, unexcused = st.tabs(
+        [
+            labels["summary"],
+            labels["attendant"],
+            labels["fullday"],
+            labels["halfday"],
+            labels["unexcused"],
+        ]
     )
+
+    with summary:
+        st.dataframe(summary_df, hide_index=True)
 
     with attendant:
         st.dataframe(attendant_df, hide_index=True)
