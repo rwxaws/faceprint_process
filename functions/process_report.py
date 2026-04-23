@@ -2,6 +2,7 @@ import pandas as pd
 
 from functions.process_excuses import process_excuses
 from functions.utils import cleanup_tables, get_date, load_sql
+import os
 import arabic_names
 
 
@@ -45,7 +46,7 @@ def process_report(con, report_file, emp_file, duty_file, rest_files):
     target_date = get_date(con, "report")
 
     # label early, late, and absent employees
-    con.sql(f"CREATE OR REPLACE MACRO leave_hour() AS TIME '{arabic_names.leave_hour}'")
+    con.sql(f"CREATE OR REPLACE MACRO leave_hour() AS TIME '{os.environ.get("LEAVE_TIME")}'")
     con.sql(load_sql("sql/report/label.sql"))
 
     # extract attendants
